@@ -1,0 +1,1 @@
+IMAGE my64tiles "my64tiles.png" 0
