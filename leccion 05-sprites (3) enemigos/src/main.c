@@ -5,7 +5,7 @@
 
 #include <genesis.h>
 
-#include "fondos.h"   //carga las 2 imágenes de background
+#include "fondos.h"   //carga las 2 imÃ¡genes de background
 #include "sprites.h"  //carga el sprite de Sonic
 
 #define ANIM_STAND      0
@@ -36,7 +36,7 @@ int enemigoPosy[2];
 int enemigoSentidoMovimiento;
 
 //Para el mov senoidal
-#define avispaY 84
+#define CONST 84
 
 
 int main()
@@ -64,10 +64,10 @@ int main()
     //recoje la paleta de sonic y la mete en la 3a paleta del sistema
     VDP_setPalette(PAL2,sonic_sprite.palette->data);
 
-    //añade el sprite de Sonic
+    //aÃ±ade el sprite de Sonic
     mi_sonic = SPR_addSprite(&sonic_sprite, posx, posy, TILE_ATTR(PAL2, TRUE, FALSE, FALSE));
 
-    //añade los enemigos
+    //aÃ±ade los enemigos
 
         //posicion
         enemigoPosx[0] = 128;
@@ -83,7 +83,7 @@ int main()
         enemigo[0] = SPR_addSprite(&enemies_sprite, enemigoPosx[0], enemigoPosy[0], TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
         enemigo[1] = SPR_addSprite(&enemies_sprite, enemigoPosx[1], enemigoPosy[1], TILE_ATTR(PAL3, TRUE, FALSE, FALSE));
 
-        //asigna la animacion correcta (o todos tendrán la primera animación del fichero png)
+        //asigna la animacion correcta (o todos tendrÃ¡n la primera animaciÃ³n del fichero png)
         SPR_setAnim(enemigo[0], 1); //asigna la animacion del cangrejo (la segunda, 1, del png)
         SPR_setAnim(enemigo[1], 0); //asigna la animacion de la avispa (la primera, 0, del png) <- no es necesaria
 
@@ -114,7 +114,7 @@ int main()
 
 //Funcion handleInput()  recoje la entrada del mando (izq,dcha) y actualiza la posicion
 //del sprite mi_sonic, sumando o restando de la variable posx
-//además le damos la vuelta al sprite al movernos horizontalmente
+//ademÃ¡s le damos la vuelta al sprite al movernos horizontalmente
 static void handleInput()
 {
     //variable donde se guarda la entrada del mando
@@ -149,26 +149,28 @@ static void mueveEnemigos()
 {
     //velocidad de movimiento de los enemigos
     int velocidadmovx = 1;
+    int acelerador = 1;     //modificador el mov sinoidal (CAMBIALO PARA PROBAR)
+    int mod_amplitud = 1;   //modificador el mov sinoidal (CAMBIALO PARA PROBAR)
 
     //CANGREJO ( =enemigo[0] )
-    //calcula la nueva posicion y, si se sale de la pantalla, invierte el sentido del movimiento
+    //movimiento horizontal simple. Al llegar a los extremos de la pantalla rebota.
     enemigoPosx[0] += velocidadmovx * enemigoSentidoMovimiento;
     if(enemigoPosx[0]>=320 || enemigoPosx[0]<=0) enemigoSentidoMovimiento *= -1;
 
     //AVISPA ( =enemigo[1] )
-    //realiza movimiento senoidal y siempre va en la misma dirección
+    //mov horizontal simple, no hay rebote, aparecerÃ¡ por el otro lado de la pantalla
+    //movimiento vertical senoidal
     enemigoPosx[1] -= velocidadmovx;
-    enemigoPosy[1] = avispaY + sinFix16(enemigoPosx[1]);
+    enemigoPosy[1] = CONST + sinFix16(enemigoPosx[1]* acelerador) * mod_amplitud;
 
-
-    //actualiza la posicion
+    //actualiza la posicion en el VDP
     SPR_setPosition(enemigo[0], enemigoPosx[0], enemigoPosy[0]);
     SPR_setPosition(enemigo[1], enemigoPosx[1], enemigoPosy[1]);
 
 }
 
 
-//Función pinta_posicion() : Escribe en pantalla la posición del sprite
+//FunciÃ³n pinta_posicion() : Escribe en pantalla la posiciÃ³n del sprite
 static void pinta_posicion()
 {
     //declaramos una cadena de caracteres
