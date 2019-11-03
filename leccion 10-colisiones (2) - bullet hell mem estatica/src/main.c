@@ -1,5 +1,5 @@
 /**
- *      @Title:  Leccion 11 - "Colisiones (2) Bullet Hell mem estatica"
+ *      @Title:  Leccion 10 - "Colisiones (2) Bullet Hell mem estatica"
  *      @Author: Daniel Bustos "danibus"
  */
 
@@ -26,7 +26,7 @@
 
     #define CAJA_COL_PLAYER_X1       8 //son coordenadas relativas a la posicion
     #define CAJA_COL_PLAYER_Y1       8 //del sprite. poLa caja es de 16x16px
-    #define CAJA_COL_PLAYER_X2      16 //es decir, 2x2 tiles, y est· situada justo en
+    #define CAJA_COL_PLAYER_X2      16 //es decir, 2x2 tiles, y est√° situada justo en
     #define CAJA_COL_PLAYER_Y2      16 //el cuerpo de la nave
 
     #define CAJA_COL_BOSS_X1       230 //son coordenadas absolutas de la pantalla
@@ -61,9 +61,9 @@
     //Nave del Player
     struct{
         Sprite *spr_player; //puntero al sprite
-        int x, y;           //posiciÛn
+        int x, y;           //posici√≥n
         int x1,y1,x2,y2;    //caja de colision
-        int tempo_disparo;  //tempo de repeticiÛn de disparo
+        int tempo_disparo;  //tempo de repetici√≥n de disparo
     }NAVE;
 
     //BOSS
@@ -158,7 +158,7 @@ static void crea_bala_player(int tipo)
 
 
 //VIDA DE UNA BALA DEL PLAYER
-//- Mueve bala seg˙n su tipo (recto o en diagonal)
+//- Mueve bala seg√∫n su tipo (recto o en diagonal)
 //- Elimina la bala si se sale de la pantalla
 //- Elimina la bala si toca la caja de colision del enemigo
 static void mantenimiento_balas_player()
@@ -234,7 +234,7 @@ static void mantenimiento_explosiones()
 
 //CREA BALA DEL BOSS
 //crea una bala en la primera pos libre del array
-//cada bala se crea en una posiciÛn vertical aleatoria
+//cada bala se crea en una posici√≥n vertical aleatoria
 static void crea_bala_boss()
 {
     for(int cont = 0; cont <MAX_BALAS_BOSS; cont++)
@@ -255,7 +255,7 @@ static void crea_bala_boss()
 
 
 //VIDA DE UNA BALA DEL BOSS
-//- Mueve bala seg˙n su tipo: 0,1,2: recto, diagonal-izq-arriba, diagonal-izq-abajo
+//- Mueve bala seg√∫n su tipo: 0,1,2: recto, diagonal-izq-arriba, diagonal-izq-abajo
 //- Elimina la bala si se sale de la pantalla o si toca la caja de colision del player
 //- Cuando dentro del bucle tratamos tantas balas como balas activas, salimos del bucle
 static void mantenimiento_balas_boss()
@@ -264,7 +264,7 @@ static void mantenimiento_balas_boss()
     {
         if(lista_balas_boss[cont].a == 1)    //solo las activas
         {
-            i++; if(i>num_balas_boss) break; //no vamos a hacer m·s ciclos del bucle que los necesarios
+            i++; if(i>num_balas_boss) break; //no vamos a hacer m√°s ciclos del bucle que los necesarios
 
             if(lista_balas_boss[cont].tipo==0)  lista_balas_boss[cont].x-=VELOCIDAD_BALA_BOSS;
             if(lista_balas_boss[cont].tipo==1){ lista_balas_boss[cont].x-=VELOCIDAD_BALA_BOSS; lista_balas_boss[cont].y--; }
