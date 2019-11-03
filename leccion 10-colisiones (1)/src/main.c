@@ -1,5 +1,5 @@
 /**
- *      @Title:  Leccion 11 - "Colisiones (1)"
+ *      @Title:  Leccion 10 - "Colisiones (1)"
  *      @Author: Daniel Bustos "danibus"
  */
 
@@ -60,7 +60,7 @@
 
     //Caja de colisiones
     //4 puntos que definen un rectangulo con el cual vamos a
-    // detectar colision si la bala est· dentro de Èl
+    // detectar colision si la bala est√° dentro de √©l
     struct{
 
         int x1, y1, x2, y2;
@@ -92,7 +92,7 @@ int main()
     //recoge la paleta de la bala
     VDP_setPalette(PAL1,bala_sprite.palette->data);
 
-    //aÒade los dos sprites de las balas
+    //a√±ade los dos sprites de las balas
     mi_bala   = SPR_addSprite(&bala_sprite, bala_posx,  bala_posy,  TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
     otra_bala = SPR_addSprite(&bala_sprite, bala2_posx, bala2_posx, TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
 
@@ -103,7 +103,7 @@ int main()
     VDP_drawText("Pulsa - START - para continuar  ",  2, 26);
 
     SYS_setHIntCallback(mi_hblank); //Define la funcion a lanzar cuando se de la interrupcion
-    VDP_setHIntCounter(8);		    //Cada 8 scanlines, se lanzar· la interrupcion horizontal
+    VDP_setHIntCounter(8);		    //Cada 8 scanlines, se lanzar√° la interrupcion horizontal
     VDP_setHInterrupt(1);		    //Activa la interrupcion horizontal (comenzamos buscando colision HW)
 
     //Bucle principal primera parte
@@ -158,7 +158,7 @@ int main()
 
     //carga los recursos necesarios para esta parte
 
-    //aÒade el sprite de la bala
+    //a√±ade el sprite de la bala
     bala_posx = 100;
     bala_posy = 100;
     mi_bala   = SPR_addSprite(&bala_sprite, bala_posx,  bala_posy,  TILE_ATTR(PAL1, TRUE, FALSE, FALSE));
@@ -270,7 +270,7 @@ int main()
 
 void mi_hblank()
 {
-    //lee el bit del VDP y poco m·s, la cuestiÛn es que hay que leerlo en la interrupcion
+    //lee el bit del VDP y poco m√°s, la cuesti√≥n es que hay que leerlo en la interrupcion
     //si se intenta leer fuera de aqui, no dara resultado alguno
     if(GET_VDPSTATUS(VDP_SPRCOLLISION_FLAG)!=0) VDP_drawText("Si", 26, 20);
 }
@@ -299,7 +299,7 @@ static void handleInput()
         seleccion_tipo_colision = 0;
 
         SYS_setHIntCallback(mi_hblank);
-        VDP_setHIntCounter(8);		//cada 8 scanlines, se lanzar· la interrupcion horizontal
+        VDP_setHIntCounter(8);		//cada 8 scanlines, se lanzar√° la interrupcion horizontal
         VDP_setHInterrupt(1);		//Enable horizontal interrupt
     }
     //si pulsamos B
@@ -506,7 +506,7 @@ static void chequea_colision3()
     if(cont2==0) VDP_drawText("No", 28, 22); else VDP_drawText("Si", 28, 22);
 /*
     //posicion Sonic
-    //por alg˙n motivo... si no comentamos esto de aquÌ abajo, va m·s lento de lo normal
+    //por alg√∫n motivo... si no comentamos esto de aqu√≠ abajo, va m√°s lento de lo normal
     //(pero NO en chequea_colision2() donde hacemos exactamente lo mismo  ?? )
     char x1_string[32];
     sprintf(x1_string, "%4d", sonic_posx);
