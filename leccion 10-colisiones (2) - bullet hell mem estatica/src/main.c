@@ -409,6 +409,8 @@ int total = contador_balas + contador_balas_boss + contador_explosiones;
     VDP_drawText("Total sprites:",  1, 24);
     VDP_drawText(z2_string, 15, 24);
 
+//fps
+VDP_showFPS(FALSE);    
 }
 
 
@@ -460,7 +462,7 @@ int main()
     NAVE.spr_player = SPR_addSprite(&nave_sprite, NAVE.x,  NAVE.y,  TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 
     //AYUDA en pantalla
-    VDP_drawText("BULLET HELL HELP          ",  1, 1);
+    VDP_drawText("      BULLET HELL HELP    ",  1, 1);
     VDP_drawText("PAD - Controles, A/B: Fire",  2, 2);
     VDP_drawText("C: Boss Bullet Hell       ",  2, 3);
 
