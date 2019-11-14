@@ -25,8 +25,8 @@
     #define VELOCIDAD_BALA_BOSS      1
 
     #define CAJA_COL_PLAYER_X1       8 //son coordenadas relativas a la posicion
-    #define CAJA_COL_PLAYER_Y1       8 //del sprite. poLa caja es de 16x16px
-    #define CAJA_COL_PLAYER_X2      16 //es decir, 2x2 tiles, y está situada justo en
+    #define CAJA_COL_PLAYER_Y1       8 //del sprite. La caja es de 8x8px
+    #define CAJA_COL_PLAYER_X2      16 //es decir, 1 tile, está situada justo en
     #define CAJA_COL_PLAYER_Y2      16 //el cuerpo de la nave
 
     #define CAJA_COL_BOSS_X1       230 //son coordenadas absolutas de la pantalla
