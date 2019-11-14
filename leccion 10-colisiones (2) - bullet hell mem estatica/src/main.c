@@ -34,6 +34,8 @@
     #define CAJA_COL_BOSS_X2       290
     #define CAJA_COL_BOSS_Y2       145
 
+    #define EXPLOSION_T_VIDA        10 //ciclos de vida de la explosion antes de eliminarse
+
 
 //Declaracion de funciones
 
@@ -202,7 +204,7 @@ static void crea_explosion(int x, int y)
                 lista_explosiones[cont].a = 1;
                 lista_explosiones[cont].x = x;
                 lista_explosiones[cont].y = y;
-                lista_explosiones[cont].t_vida = 30; //ciclos de vida de la explosion
+                lista_explosiones[cont].t_vida = EXPLOSION_T_VIDA;
                 lista_explosiones[cont].spr = SPR_addSprite(&explosion_sprite, lista_explosiones[cont].x,
                                                             lista_explosiones[cont].y, TILE_ATTR(PAL0,TRUE,FALSE, FALSE));
                 break;
