@@ -308,7 +308,7 @@ static void mantenimiento_balas_boss()
             if(lista_balas_boss[cont].x<=0 || lista_balas_boss[cont].y<=0 || lista_balas_boss[cont].y>=220)
             {
                 lista_balas_boss[cont].a = 0;       //marca como inactivo en el vector
-                lista_balas_boss[cont].x = 0;       //fuera de la pantalla
+                lista_balas_boss[cont].x = -50;     //fuera de la pantalla
                 lista_balas_boss[cont].y = -50;
                 num_balas_boss--;
                 total_sprites--;
