@@ -26,7 +26,7 @@
 
     #define CAJA_COL_PLAYER_X1       8 //son coordenadas relativas a la posicion
     #define CAJA_COL_PLAYER_Y1       8 //del sprite. La caja es de 8x8px
-    #define CAJA_COL_PLAYER_X2      16 //es decir, 1 tile, est· situada justo en
+    #define CAJA_COL_PLAYER_X2      16 //es decir, 1 tile, est√° situada justo en
     #define CAJA_COL_PLAYER_Y2      16 //el cuerpo de la nave
 
     #define CAJA_COL_BOSS_X1       230 //son coordenadas absolutas de la pantalla
@@ -63,9 +63,9 @@
     //Nave del Player
     struct{
         Sprite *spr_player; //puntero al sprite
-        int x, y;           //posiciÛn
+        int x, y;           //posici√≥n
         int x1,y1,x2,y2;    //caja de colision
-        int tempo_disparo;  //tempo de repeticiÛn de disparo
+        int tempo_disparo;  //tempo de repetici√≥n de disparo
     }NAVE;
 
     //BOSS
@@ -125,7 +125,7 @@ static void inicializa_balas_player(){
     for(int cont = 0; cont <MAX_BALAS_PLAYER; cont++){
         lista_balas_player[cont].a    = 0;
         lista_balas_player[cont].x    = -50; // se crean fuera de pantalla visible de forma que
-        lista_balas_player[cont].y    = -50; // al asignar el sprite (abajo), Èste no se vea
+        lista_balas_player[cont].y    = -50; // al asignar el sprite (abajo), √©ste no se vea
         lista_balas_player[cont].tipo = 0;
         lista_balas_player[cont].spr  = SPR_addSprite(&bala_sprite, lista_balas_player[cont].x,
                                             lista_balas_player[cont].y, TILE_ATTR(PAL0,TRUE,FALSE, FALSE));
@@ -182,7 +182,7 @@ static void crea_bala_player(int tipo)
 
 
 //VIDA DE UNA BALA DEL PLAYER
-//- Mueve bala seg˙n su tipo (recto o en diagonal)
+//- Mueve bala seg√∫n su tipo (recto o en diagonal)
 //- Elimina la bala si se sale de la pantalla
 //- Elimina la bala si toca la caja de colision del enemigo
 static void mantenimiento_balas_player()
@@ -253,7 +253,7 @@ static void mantenimiento_explosiones()
             if(lista_explosiones[cont].t_vida<=0)
             {
                 lista_explosiones[cont].a = 0 ;                   //marca como inactivo en el vector
-                lista_explosiones[cont].x = -100;                 //posiciÛn (fuera de la pantalla), falta decirle
+                lista_explosiones[cont].x = -100;                 //posici√≥n (fuera de la pantalla), falta decirle
                 lista_explosiones[cont].y = -100;                 //al VDP que actualice la posicion en la tabla de sprites
                 SPR_setPosition(lista_explosiones[cont].spr,lista_explosiones[cont].x,lista_explosiones[cont].y );
                 num_explosiones--;
@@ -268,8 +268,8 @@ static void mantenimiento_explosiones()
 
 //CREA BALA DEL BOSS
 //NO CREA, activa (a=1) la bala de la primera pos libre del array
-//La bala se situa en una posiciÛn vertical aleatoria y con x=220
-//El sprite ya lo tenÌa asignado previamente
+//La bala se situa en una posici√≥n vertical aleatoria y con x=220
+//El sprite ya lo ten√≠a asignado previamente
 static void crea_bala_boss()
 {
     for(int cont = 0; cont <MAX_BALAS_BOSS; cont++)
@@ -289,7 +289,7 @@ static void crea_bala_boss()
 
 
 //VIDA DE UNA BALA DEL BOSS
-//- Mueve bala seg˙n su tipo: 0,1,2: recto, diagonal-izq-arriba, diagonal-izq-abajo
+//- Mueve bala seg√∫n su tipo: 0,1,2: recto, diagonal-izq-arriba, diagonal-izq-abajo
 //- Elimina la bala si se sale de la pantalla o si toca la caja de colision del player
 //- Cuando dentro del bucle tratamos tantas balas como balas activas, salimos del bucle
 static void mantenimiento_balas_boss()
@@ -298,7 +298,7 @@ static void mantenimiento_balas_boss()
     {
         if(lista_balas_boss[cont].a == 1)    //solo las activas
         {
-            i++; if(i>num_balas_boss) break; //no vamos a hacer m·s ciclos del bucle que los necesarios
+            i++; if(i>num_balas_boss) break; //no vamos a hacer m√°s ciclos del bucle que los necesarios
 
             if(lista_balas_boss[cont].tipo==0)  lista_balas_boss[cont].x-=VELOCIDAD_BALA_BOSS;
             if(lista_balas_boss[cont].tipo==1){ lista_balas_boss[cont].x-=VELOCIDAD_BALA_BOSS; lista_balas_boss[cont].y--; }
@@ -346,8 +346,6 @@ static void actualiza_caja_colisiones_player()
 //Recoge la entrada del mando y actualiza la posicion de la nave
 static void handleInput()
 {
-
-    KLog_S1("dentro",0);
     //variable donde se guarda la entrada del mando
     u16 value = JOY_readJoypad(JOY_1);
     //si pulsamos izquierda...
