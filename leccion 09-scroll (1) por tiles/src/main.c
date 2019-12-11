@@ -11,6 +11,7 @@
     ESTADO 5: Mov de planos A y B solo en horiz. Sprite fijo.
     ESTADO 6: Mov de planos A, B y Sprite (limitado a zona visible).
     ESTADO 7: SHOOT 'EM UP
+    ESTADO 8: SCROLL VERTICAL
 */
 
 #include <genesis.h>
@@ -42,7 +43,7 @@ static void actualizaCamara();
 Sprite *Sonic, *Nave, *Enemigos[6];
 
 //Para ir pasando por los distintos ejemplos
-int estado  = 1;
+int estado  = 1; //estado inicial
 int cerrojo = 0;
 
 //Cuenta de tiles en VRAM
@@ -70,12 +71,16 @@ s16 vector04[28] ={0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0}
 s16 vector05[28] ={0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0};
 s16 vector06[28] ={0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0};
 
+s16 vector07[20] ={0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0, 0,0,0,0,0};
+
 s16 v_aceleracion01[6] = {1,2,3,3,2,1};
 s16 v_aceleracion02[10]= {1,2,3,4,5,6,7,8,9,10};
-s16 v_aceleracion03[28] ={9,9,8,8, 7,6,6,6, 5,5,4,3, 2,1,2,3, 4,5,5,6, 6,6,7,7, 8,8,9,9};
+s16 v_aceleracion03[28] ={9,9,8,8,7, 6,6,6,5,5, 4,3,2,1,2, 3,4,5,5,6};
+s16 v_aceleracion04[20] ={10,9,8,5,6, 5,4,3,2,1, 1,2,3,4,5, 6,7,8,9,10};
 
 fix16 vector_aux[28] ={0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0,};
 fix16 aceleracion04 = FIX16(0.06);
+
 
 
 int main()
@@ -98,7 +103,7 @@ int main()
     VDP_drawImageEx(PLAN_A, &bga_image, TILE_ATTR_FULL(PAL1, FALSE, FALSE, FALSE, ind), 0, 0, FALSE, TRUE);
     ind += bga_image.tileset->numTile;
 
-    //Configura el scroll (por TILES)
+    //Configura el scroll (por TILES horizontal, el vertical no lo uso y lo dejo por defecto)
     VDP_setScrollingMode(HSCROLL_TILE, VSCROLL_PLANE);
 
     //bucle ppal
@@ -179,7 +184,7 @@ static void cargaESTADO()
         VDP_drawImageEx(PLAN_A, &bgc_image, TILE_ATTR_FULL(PAL0, FALSE, FALSE, FALSE, ind), 0, 0, FALSE, TRUE);
         ind += bgc_image.tileset->numTile;
 
-        //Configura el scroll (por TILES)
+        //Configura el scroll (por TILES horizontal, el vertical no lo uso y lo dejo por defecto)
         VDP_setScrollingMode(HSCROLL_TILE, VSCROLL_PLANE);
 
         //posiciones iniciales de los sprites
@@ -194,6 +199,31 @@ static void cargaESTADO()
         for(int i = 0; i<6; i++)
             Enemigos[i] = SPR_addSprite(&enemigo_sprite, enemigo_posx[i], enemigo_posy[i], TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
     }
+
+    if(estado == 8)
+    {
+        //resetea el VDP: fondos, vram, etc
+        VDP_resetScreen();
+        VDP_init();
+
+        //320x224px
+        VDP_setScreenWidth320();
+
+        //inicializa motor de sprites
+        SPR_init(0, 0, 0);
+
+        //paletas
+        VDP_setPalette(PAL0, bgv_image.palette->data);
+
+        //backgrounds
+        ind = TILE_USERINDEX;
+        VDP_drawImageEx(PLAN_A, &bgv_image, TILE_ATTR_FULL(PAL0, FALSE, FALSE, FALSE, ind), 0, 0, FALSE, TRUE);
+        ind += bgv_image.tileset->numTile;
+
+        //Configura el scroll (por TILES vertical, el horizontal no lo uso, lo dejo por defecto)
+        VDP_setScrollingMode(HSCROLL_PLANE , VSCROLL_2TILE);
+    }
+
 
 
     //finalmente activamos el cerrojo para no salirse del bucle secundario
@@ -275,10 +305,13 @@ static void actualizaCamara()
             //si se sale por la izq, lo ponemos a la derecha en otra posicion
             if(enemigo_posx[i]<-50){ enemigo_posx[i]=350; enemigo_posy[i]=(((random()%200)-1)+1); } //200 es el max de la coordenada y
         }
+    }
 
-
-
-
+    if(estado == 8) //scroll por tiles vertical
+    {
+        //plano A
+        VDP_setVerticalScrollTile(PLAN_A, 0, vector07, 20, CPU);
+        for(int i = 0; i < 20; i++) vector07[i] -= v_aceleracion04[i];
     }
 
 }
@@ -363,11 +396,17 @@ static void handleInput()
             (!(value & BUTTON_UP)) && (!(value & BUTTON_DOWN)))
             SPR_setAnim(Nave, ANIM_NAVE_IDLE);
 
-        //reinicia la ROM
-        if (value & BUTTON_START) SYS_hardReset();  //hay que añadir #include "sys.h" en la cabecera
+        //abre el cerrojo para salir del bucle secundario
+        if (value & BUTTON_A) cerrojo=0;
 
         //actualiza posicion del sprite
         SPR_setPosition(Nave, posx, posy);
+    }
+
+    if(estado == 8) //scroll tiles vertical | tecla START: reiniciar
+    {
+        //reinicia la ROM
+        if (value & BUTTON_START) SYS_hardReset();  //hay que añadir #include "sys.h" en la cabecera
     }
 }
 
@@ -414,7 +453,13 @@ static void muestraMENSAJES()
     if(estado == 7)
     {
     VDP_drawTextBG(PLAN_B,"Ejemplo 07", 14, 24);
-    VDP_drawTextBG(PLAN_B,"Pulsa -START- para REINICIAR", 14, 25);
+    VDP_drawTextBG(PLAN_B,"Pulsa -A- para continuar", 14, 25);
+    }
+
+    if(estado == 8)
+    {
+    VDP_drawTextBG(PLAN_B,"Ejemplo 08", 7, 24);
+    VDP_drawTextBG(PLAN_B,"Pulsa -START- para REINICIAR", 7, 25);
     }
 
 }
