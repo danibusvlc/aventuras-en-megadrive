@@ -212,7 +212,7 @@ static void handleInput()
         if(value & BUTTON_UP)
         {
             //incrementamos la diagonal
-            diagonal_dinamica++;
+            diagonal_dinamica = fix16Add(diagonal_dinamica,FIX16(0.025));
             //Contador
             u16 i;
             //como antes
@@ -236,7 +236,7 @@ static void handleInput()
         if(value & BUTTON_DOWN)
         {
             //incrementamos la diagonal
-            diagonal_dinamica--;
+            diagonal_dinamica = fix16Sub(diagonal_dinamica,FIX16(0.025));
             //Contador
             u16 i;
             //como antes
